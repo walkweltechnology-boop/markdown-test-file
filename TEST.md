@@ -1,310 +1,182 @@
-# Markdown: Syntax
-
-*   [Overview](#overview)
-    *   [Philosophy](#philosophy)
-    *   [Inline HTML](#html)
-    *   [Automatic Escaping for Special Characters](#autoescape)
-*   [Block Elements](#block)
-    *   [Paragraphs and Line Breaks](#p)
-    *   [Headers](#header)
-    *   [Blockquotes](#blockquote)
-    *   [Lists](#list)
-    *   [Code Blocks](#precode)
-    *   [Horizontal Rules](#hr)
-*   [Span Elements](#span)
-    *   [Links](#link)
-    *   [Emphasis](#em)
-    *   [Code](#code)
-    *   [Images](#img)
-*   [Miscellaneous](#misc)
-    *   [Backslash Escapes](#backslash)
-    *   [Automatic Links](#autolink)
-
-
-**Note:** This document is itself written using Markdown; you
-can [see the source for it by adding '.text' to the URL](/projects/markdown/syntax.text).
-
-----
+# Telegra Commerce Architecture
 
 ## Overview
 
-### Philosophy
-
-Markdown is intended to be as easy-to-read and easy-to-write as is feasible.
-
-Readability, however, is emphasized above all else. A Markdown-formatted
-document should be publishable as-is, as plain text, without looking
-like it's been marked up with tags or formatting instructions. While
-Markdown's syntax has been influenced by several existing text-to-HTML
-filters -- including [Setext](http://docutils.sourceforge.net/mirror/setext.html), [atx](http://www.aaronsw.com/2002/atx/), [Textile](http://textism.com/tools/textile/), [reStructuredText](http://docutils.sourceforge.net/rst.html),
-[Grutatext](http://www.triptico.com/software/grutatxt.html), and [EtText](http://ettext.taint.org/doc/) -- the single biggest source of
-inspiration for Markdown's syntax is the format of plain text email.
-
-## Block Elements
-
-### Paragraphs and Line Breaks
-
-A paragraph is simply one or more consecutive lines of text, separated
-by one or more blank lines. (A blank line is any line that looks like a
-blank line -- a line containing nothing but spaces or tabs is considered
-blank.) Normal paragraphs should not be indented with spaces or tabs.
-
-The implication of the "one or more consecutive lines of text" rule is
-that Markdown supports "hard-wrapped" text paragraphs. This differs
-significantly from most other text-to-HTML formatters (including Movable
-Type's "Convert Line Breaks" option) which translate every line break
-character in a paragraph into a `<br />` tag.
-
-When you *do* want to insert a `<br />` break tag using Markdown, you
-end a line with two or more spaces, then type return.
-
-### Headers
-
-Markdown supports two styles of headers, [Setext] [1] and [atx] [2].
-
-Optionally, you may "close" atx-style headers. This is purely
-cosmetic -- you can use this if you think it looks better. The
-closing hashes don't even need to match the number of hashes
-used to open the header. (The number of opening hashes
-determines the header level.)
-
-
-### Blockquotes
-
-Markdown uses email-style `>` characters for blockquoting. If you're
-familiar with quoting passages of text in an email message, then you
-know how to create a blockquote in Markdown. It looks best if you hard
-wrap the text and put a `>` before every line:
-
-> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-> 
-> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-> id sem consectetuer libero luctus adipiscing.
-
-Markdown allows you to be lazy and only put the `>` before the first
-line of a hard-wrapped paragraph:
-
-> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-
-> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-id sem consectetuer libero luctus adipiscing.
-
-Blockquotes can be nested (i.e. a blockquote-in-a-blockquote) by
-adding additional levels of `>`:
-
-> This is the first level of quoting.
->
-> > This is nested blockquote.
->
-> Back to the first level.
-
-Blockquotes can contain other Markdown elements, including headers, lists,
-and code blocks:
-
-> ## This is a header.
-> 
-> 1.   This is the first list item.
-> 2.   This is the second list item.
-> 
-> Here's some example code:
-> 
->     return shell_exec("echo $input | $markdown_script");
-
-Any decent text editor should make email-style quoting easy. For
-example, with BBEdit, you can make a selection and choose Increase
-Quote Level from the Text menu.
-
-
-### Lists
-
-Markdown supports ordered (numbered) and unordered (bulleted) lists.
-
-Unordered lists use asterisks, pluses, and hyphens -- interchangably
--- as list markers:
-
-*   Red
-*   Green
-*   Blue
-
-is equivalent to:
-
-+   Red
-+   Green
-+   Blue
-
-and:
-
--   Red
--   Green
--   Blue
-
-Ordered lists use numbers followed by periods:
-
-1.  Bird
-2.  McHale
-3.  Parish
-
-It's important to note that the actual numbers you use to mark the
-list have no effect on the HTML output Markdown produces. The HTML
-Markdown produces from the above list is:
-
-If you instead wrote the list in Markdown like this:
-
-1.  Bird
-1.  McHale
-1.  Parish
-
-or even:
-
-3. Bird
-1. McHale
-8. Parish
-
-you'd get the exact same HTML output. The point is, if you want to,
-you can use ordinal numbers in your ordered Markdown lists, so that
-the numbers in your source match the numbers in your published HTML.
-But if you want to be lazy, you don't have to.
-
-To make lists look nice, you can wrap items with hanging indents:
-
-*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-    viverra nec, fringilla in, laoreet vitae, risus.
-*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-    Suspendisse id sem consectetuer libero luctus adipiscing.
-
-But if you want to be lazy, you don't have to:
-
-*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-viverra nec, fringilla in, laoreet vitae, risus.
-*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-Suspendisse id sem consectetuer libero luctus adipiscing.
-
-List items may consist of multiple paragraphs. Each subsequent
-paragraph in a list item must be indented by either 4 spaces
-or one tab:
-
-1.  This is a list item with two paragraphs. Lorem ipsum dolor
-    sit amet, consectetuer adipiscing elit. Aliquam hendrerit
-    mi posuere lectus.
-
-    Vestibulum enim wisi, viverra nec, fringilla in, laoreet
-    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
-    sit amet velit.
-
-2.  Suspendisse id sem consectetuer libero luctus adipiscing.
-
-It looks nice if you indent every line of the subsequent
-paragraphs, but here again, Markdown will allow you to be
-lazy:
-
-*   This is a list item with two paragraphs.
-
-    This is the second paragraph in the list item. You're
-only required to indent the first line. Lorem ipsum dolor
-sit amet, consectetuer adipiscing elit.
-
-*   Another item in the same list.
-
-To put a blockquote within a list item, the blockquote's `>`
-delimiters need to be indented:
-
-*   A list item with a blockquote:
-
-    > This is a blockquote
-    > inside a list item.
-
-To put a code block within a list item, the code block needs
-to be indented *twice* -- 8 spaces or two tabs:
-
-*   A list item with a code block:
-
-        <code goes here>
-
-### Code Blocks
-
-Pre-formatted code blocks are used for writing about programming or
-markup source code. Rather than forming normal paragraphs, the lines
-of a code block are interpreted literally. Markdown wraps a code block
-in both `<pre>` and `<code>` tags.
-
-To produce a code block in Markdown, simply indent every line of the
-block by at least 4 spaces or 1 tab.
-
-This is a normal paragraph:
-
-    This is a code block.
-
-Here is an example of AppleScript:
-
-    tell application "Foo"
-        beep
-    end tell
-
-A code block continues until it reaches a line that is not indented
-(or the end of the article).
-
-Within a code block, ampersands (`&`) and angle brackets (`<` and `>`)
-are automatically converted into HTML entities. This makes it very
-easy to include example HTML source code using Markdown -- just paste
-it and indent it, and Markdown will handle the hassle of encoding the
-ampersands and angle brackets. For example, this:
-
-    <div class="footer">
-        &copy; 2004 Foo Corporation
-    </div>
-
-Regular Markdown syntax is not processed within code blocks. E.g.,
-asterisks are just literal asterisks within a code block. This means
-it's also easy to use Markdown to write about Markdown's own syntax.
-
-```
-tell application "Foo"
-    beep
-end tell
+The Telegra Commerce platform is a multi-layered, cloud-based e-commerce solution designed to support affiliates and healthcare providers. The architecture consists of three primary layers: Management, Infrastructure, and Commerce, with seamless integration between provisioning, store management, and customer-facing applications.
+
+## Architecture Diagram
+
+```mermaid
+architecture-beta
+    group mgt(cloud)[Management]
+    group infra(cloud)[Infrastructure]
+    group shop(cloud)[Commerce]
+        
+    service tam(server)[TAM] in mgt
+    service portal(internet)[Affiliate Admin Portal] in mgt
+            
+    service docker(mdi:docker)[Docker] in infra
+    service prov(mdi:cog)[Provisioning] in infra
+            
+    service wp(disk)[WP Store] in shop
+    service tcs(server)[TCS] in shop
+    service sf(internet)[Shop Frontend] in shop
+        
+    %% Infrastructure Path (straight lines)
+    tam:R -- L:portal
+    portal:R -- L:prov
+    prov:R -- L:docker
+    docker:R -- L:wp
+        
+    %% Data & Journey Logic (avoid Docker overlap)
+    wp:R -- L:tcs
+    portal:L -- L:tcs
+        
+    %% Final Journey Connection
+    portal:R -- L:sf
 ```
 
-## Span Elements
+## System Flow - Sequence Diagram
 
-### Links
+This diagram illustrates the complete flow from admin provisioning through customer journey implementation:
 
-Markdown supports two style of links: *inline* and *reference*.
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Admin as Telegra Admin Manager (TAM)
+    participant Portal as Affiliate Admin Portal (AA)
+    participant Prov as Provisioning Service
+    participant Docker as Docker Runtime
+    participant WP as WordPress Store
+    participant TCS as Telegra Commerce Server
+    participant SF as Shop Frontend
 
-In both styles, the link text is delimited by [square brackets].
+    Note over Admin, Portal: Step 1: Provisioning
+    Admin->>Portal: API Call
+    Portal->>Prov: Provision Affiliate
+    Prov->>Docker: Run Dockerfile
+    Docker->>WP: Create Store instance
+    
+    Note over Prov, TCS: Step 2: Registration & Sync
+    Prov->>TCS: Register Affiliate
+    TCS->>WP: REST API Call (JSON)
+    WP-->>TCS: Return Products & Metadata
 
-To create an inline link, use a set of regular parentheses immediately
-after the link text's closing square bracket. Inside the parentheses,
-put the URL where you want the link to point, along with an *optional*
-title for the link, surrounded in quotes. For example:
+    Note over Portal, SF: Step 3: Customer Journey
+    Portal->>SF: Define Journeys & Shop URL
+    SF-->>Portal: Redirect after Journey
+```
 
-This is [an example](http://example.com/) inline link.
+## Component Interactions - Flowchart
 
-[This link](http://example.net/) has no title attribute.
+Detailed view of the relationships between all system components:
 
-### Emphasis
+```mermaid
+flowchart TB
+    %% Group Definitions
+    subgraph admin [Admin Layer]
+        TAM(Telegra Admin Manager)
+        AA(Affiliate Admin Portal)
+    end
+    
+    subgraph platform [Telegra Platform]
+        PROV(Provisioning Service)
+        TCS(Telegra Commerce Server)
+        SF(Shop Frontend)
+    end
+    
+    subgraph infra [Infrastructure]
+        DOCKER(Docker Runtime)
+        WP(WordPress Store)
+    end
+    
+    %% Relationships
+    TAM -->|API| AA
+    AA -->|Provision Affiliate| PROV
+    PROV -->|Run Dockerfile| DOCKER
+    DOCKER -->|Create Store| WP
+    
+    PROV -->|Register Affiliate| TCS
+    TCS -->|REST APIs| WP
+    WP -->|Products, Collections, Metadata| TCS
+    
+    AA -->|Define Journeys| SF
+    AA -->|Shop URL| SF
+    SF -->|Redirect after Journey| AA
+    
+    %% Styling for clarity
+    style admin fill:#f9f,stroke:#333,stroke-width:2px
+    style platform fill:#bbf,stroke:#333,stroke-width:2px
+    style infra fill:#dfd,stroke:#333,stroke-width:2px
+```
 
-Markdown treats asterisks (`*`) and underscores (`_`) as indicators of
-emphasis. Text wrapped with one `*` or `_` will be wrapped with an
-HTML `<em>` tag; double `*`'s or `_`'s will be wrapped with an HTML
-`<strong>` tag. E.g., this input:
+## Core Components
 
-*single asterisks*
+### Management Layer
 
-_single underscores_
+- **Telegra Admin Manager (TAM)**: Central administration interface for managing the entire platform
+- **Affiliate Admin Portal (AA)**: Portal for affiliate partners to manage their stores, products, and customer journeys
 
-**double asterisks**
+### Infrastructure Layer
 
-__double underscores__
+- **Provisioning Service**: Orchestrates the creation and configuration of new affiliate stores
+- **Docker Runtime**: Container orchestration platform for isolated store instances
 
-### Code
+### Commerce Layer
 
-To indicate a span of code, wrap it with backtick quotes (`` ` ``).
-Unlike a pre-formatted code block, a code span indicates code within a
-normal paragraph. For example:
+- **WordPress Store (WP)**: E-commerce backend managing products, collections, inventory, and metadata
+- **Telegra Commerce Server (TCS)**: Core REST API backend handling business logic, orders, payments, and integrations
+- **Shop Frontend (SF)**: Customer-facing React application for browsing and purchasing products
 
-Use the `printf()` function.
+## Key Integration Points
+
+### 1. Provisioning Workflow
+
+- Admin initiates affiliate provisioning through the TAM
+- Portal submits provisioning request to the Provisioning Service
+- Provisioning Service spawns isolated Docker containers running WordPress instances
+- Each store instance is registered with the TCS
+
+### 2. Data Synchronization
+
+- TCS maintains synchronization with WP stores via REST APIs
+- Product catalogs, collections, and metadata are bidirectionally synced
+- Order and transaction data flows from TCS to WP for inventory management
+
+### 3. Customer Journey Management
+
+- Affiliates define customer journeys and funnels through the Admin Portal
+- Journey configurations are deployed to the Shop Frontend
+- Customer actions trigger data collection and redirects back to the Portal
+
+## Data Flow
+
+1. **Store Creation**: TAM → Portal → Provisioning → Docker → WP Store
+2. **Affiliate Registration**: Provisioning → TCS
+3. **Product Sync**: WP Store ↔ TCS (bidirectional REST APIs)
+4. **Journey Definition**: Portal → Shop Frontend
+5. **Customer Interaction**: Customer → Shop Frontend → Portal
+
+## Technology Stack
+
+- **Backend**: Node.js, Express.js, MongoDB
+- **Frontend**: React, Next.js
+- **Infrastructure**: Docker, Docker Compose, Nginx
+- **Databases**: MongoDB (primary data store)
+- **APIs**: RESTful architecture with JSON payloads
+- **Provisioning**: Automated container orchestration
+
+## Deployment Architecture
+
+The platform supports multi-tenant deployment where:
+
+- Each affiliate gets an isolated WordPress store instance via Docker
+- All stores connect to a centralized TCS for core business logic
+- Admin Portal and Shop Frontend are shared multi-tenant applications
+- Data isolation is maintained at both container and database levels
+
+---
+
+Previous: [Installing and Running](installing-and-running.md)
+
+Next: [Command Line Interface](cli.md)
